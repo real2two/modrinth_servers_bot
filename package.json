@@ -1,0 +1,29 @@
+{
+  "name": "modrinth_servers_bot",
+  "module": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "bun .",
+    "dev": "bun --watch .",
+    "commands": "bun tools/deploy.ts",
+    "format": "biome format --write ./",
+    "schema/generate": "bun drizzle-kit generate",
+    "schema/migrate": "bun tools/migrate.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "drizzle-kit": "^0.26.2",
+    "tsx": "^4.19.1"
+  },
+  "peerDependencies": {
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@buape/carbon": "^0.6.0",
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.35.2",
+    "itty-router": "^5.0.18",
+    "mysql2": "^3.11.3"
+  }
+}
