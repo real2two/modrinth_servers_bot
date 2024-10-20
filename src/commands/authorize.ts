@@ -57,7 +57,7 @@ export class AuthorizeCommand extends Command {
 
     if (userRequest.status !== 200) {
       return interaction.reply(
-        "🛑 Could not validate access token!\n-# Make sure your personal access token has the `Read user data` scope.",
+        `🛑 Could not validate access token! *(status: \`${userRequest.status}\`)*\n-# Make sure your personal access token has the \`Read user data\` scope.`,
         { ephemeral: true },
       );
     }

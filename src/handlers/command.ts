@@ -13,13 +13,13 @@ export async function handleCommandInteraction(
 
   // Get WebSocket token
   const { status: wsStatus, body: wsBody } = await getWsToken(modrinthPat, serverId);
-  if (wsStatus !== 200) return interaction.reply("❌ Failed to send console message.");
+  if (wsStatus !== 200) return interaction.reply(`❌ Failed to send console message. *(status: \`${wsStatus}\`)*`);
   const { url, token } = wsBody;
 
   // Send console message
   const success = await sendConsoleCommand(url, token, command);
-  if (!success) return interaction.reply("❌ Failed to send console message. (2)");
+  if (!success) return interaction.reply("❌ Failed to send console message. *(failed WebSocket)*");
 
   // Send message
-  return interaction.reply("✅ Ran the console command!");
+  return interaction.reply("✅ Requested to run the console command!");
 }

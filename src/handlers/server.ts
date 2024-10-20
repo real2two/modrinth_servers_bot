@@ -45,11 +45,13 @@ export async function handleServerInteraction(
   ]);
 
   if (serverStatus !== 200) {
-    return interaction.reply("❌ Cannot find server or doesn't have access to server.", { ephemeral: true });
+    return interaction.reply(`❌ Cannot find server or doesn't have access to server. *(status: \`${serverStatus}\`)*`, {
+      ephemeral: true,
+    });
   }
 
   if (!usage) {
-    return interaction.reply("❌ Error when trying to get server usage.", { ephemeral: true });
+    return interaction.reply("❌ Error when trying to get server usage. *(failed WebSocket)*", { ephemeral: true });
   }
 
   // Send interaction

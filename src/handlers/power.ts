@@ -14,12 +14,12 @@ export async function handlePowerInteraction(
 
   // Get WebSocket token
   const { status: wsStatus, body: wsBody } = await getWsToken(modrinthPat, serverId);
-  if (wsStatus !== 200) return interaction.reply("❌ Failed to get current power state.");
+  if (wsStatus !== 200) return interaction.reply(`❌ Failed to get current power state. *(status: \`${wsStatus}\`)*`);
   const { url, token } = wsBody;
 
   // Check current power state
   const powerState = await getPowerState(url, token);
-  if (!powerState) return interaction.reply("❌ Failed to get current power state. (2)");
+  if (!powerState) return interaction.reply("❌ Failed to get current power state. *(failed WebSocket)*");
 
   if (powerState === "running" && power === "Start") return interaction.reply("❌ The server is already running!");
   if (powerState !== "running" && !["Start", "Restart"].includes(power)) {
@@ -28,7 +28,7 @@ export async function handlePowerInteraction(
 
   // Change power state
   const { status } = await changePowerState(modrinthPat, serverId, power);
-  if (status !== 201) return interaction.reply("❌ Failed to change power state.");
+  if (status !== 201) return interaction.reply(`❌ Failed to change power state. *(status: \`${status}\`)*`);
 
   // Send message
   return interaction.reply(`✅ Requested to change power state to \`${power}\`!`);
