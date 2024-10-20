@@ -66,6 +66,7 @@ export class AuthorizeCommand extends Command {
     }
 
     const userRequest = await fetch(`${env.MODRINTH_API}/_internal/session/refresh`, {
+      method: "post",
       headers: { authorization: modrinthPat },
     });
 
