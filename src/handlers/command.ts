@@ -18,7 +18,7 @@ export async function handleCommandInteraction(
 
   // Send console message
   const success = await sendConsoleCommand(url, token, command);
-  if (!success) return interaction.reply("❌ Failed to send console message.");
+  if (!success) return interaction.reply("❌ Failed to send console message. (2)");
 
   // Send message
   return interaction.reply("✅ Ran the console command!");

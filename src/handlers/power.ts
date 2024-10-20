@@ -14,12 +14,12 @@ export async function handlePowerInteraction(
 
   // Get WebSocket token
   const { status: wsStatus, body: wsBody } = await getWsToken(modrinthPat, serverId);
-  if (wsStatus !== 200) return interaction.reply("❌ Failed to send console message.");
+  if (wsStatus !== 200) return interaction.reply("❌ Failed to get current power state.");
   const { url, token } = wsBody;
 
   // Check current power state
   const powerState = await getPowerState(url, token);
-  if (!powerState) return interaction.reply("❌ Failed to get current power state.");
+  if (!powerState) return interaction.reply("❌ Failed to get current power state. (2)");
 
   if (powerState === "running" && power === "Start") return interaction.reply("❌ The server is already running!");
   if (powerState !== "running" && !["Start", "Restart"].includes(power)) {
