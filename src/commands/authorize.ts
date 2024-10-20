@@ -61,7 +61,7 @@ export class AuthorizeCommand extends Command {
       // );
     }
 
-    if (modrinthPat.startsWith("mra_")) {
+    if (!modrinthPat.startsWith("mra_")) {
       return interaction.reply("❌ This Discord bot only supports `mra` tokens currently.", { ephemeral: true });
     }
 
