@@ -19,7 +19,7 @@ export class ServersCommand extends Command {
     const { status, body } = await getServers(modrinthPat);
     if (status !== 200) {
       return interaction.reply(
-        `❌ Returned an invalid status code. *(status: \`${status}\`)*\`\n-# Has your authorization token been revoked or expired?`,
+        `❌ Returned an invalid status code. *(status: \`${status}\`)*\n-# Has your authorization token been revoked or expired?`,
         { ephemeral: true },
       );
     }
