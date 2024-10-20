@@ -21,7 +21,14 @@ export async function getModrinthPat(
   });
 
   if (!user) {
-    if (autocomplete) return (interaction as AutocompleteInteraction).respond([]);
+    if (autocomplete) {
+      return (interaction as AutocompleteInteraction).respond([
+        {
+          name: "Missing access token",
+          value: "null",
+        },
+      ]);
+    }
     return interaction.reply("❌ Missing access token.", { ephemeral: true });
   }
 

@@ -5,7 +5,7 @@ import type { Servers } from "../types";
 
 export async function autocompleteServers(interaction: AutocompleteInteraction) {
   const modrinthPat = await getModrinthPat(interaction);
-  if (!modrinthPat) return interaction.respond([{ name: "Missing access token", value: "null" }]);
+  if (!modrinthPat) return;
 
   const serversRequest = await fetch(`${env.PYRO_ARCHON_API}/servers`, {
     headers: { Authorization: `Bearer ${modrinthPat}` },
