@@ -4,7 +4,7 @@ import type { AutocompleteInteraction } from "@buape/carbon";
 import type { Servers } from "../types";
 
 export async function autocompleteServers(interaction: AutocompleteInteraction) {
-  const modrinthPat = await getModrinthPat(interaction);
+  const modrinthPat = await getModrinthPat(interaction, true);
   if (!modrinthPat) return;
 
   const serversRequest = await fetch(`${env.PYRO_ARCHON_API}/servers`, {
