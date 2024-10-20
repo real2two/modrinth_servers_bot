@@ -10,11 +10,12 @@ export function getServerUsage(
   ram_total_bytes: number;
   storage_usage_bytes: number;
   storage_total_bytes: number;
+  uptime: Date | null;
 } | null> {
   return new Promise((resolve) => {
     // biome-ignore lint/suspicious/noExplicitAny: This is bad code.
     const usage: any = {};
-    const finished = { powerState: false, stats: false };
+    const finished = { powerState: false, stats: false, uptime: false };
 
     const ws = new WebSocket(`wss://${wsUrl}`);
 
@@ -42,16 +43,24 @@ export function getServerUsage(
 
           finished.stats = true;
           break;
+        case "uptime":
+          usage.uptime = new Date(Date.now() - data.uptime * 1000);
+
+          finished.uptime = true;
+          break;
       }
 
-      if (finished.powerState && finished.stats) {
+      if (finished.powerState && finished.stats && (usage.power !== "running" || finished.uptime)) {
+        if (usage.power !== "running") usage.uptime = null;
         resolve(usage);
         return ws.close();
       }
     };
     ws.onclose = () => {
       clearTimeout(timeout);
-      if (!finished.powerState || !finished.stats) resolve(null);
+      if (!finished.powerState || (!finished.stats && !finished.uptime) || (usage.power === "running" && !finished.uptime)) {
+        resolve(null);
+      }
     };
   });
 }

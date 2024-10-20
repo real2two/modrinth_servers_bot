@@ -54,6 +54,12 @@ export async function handleServerInteraction(
     return interaction.reply("❌ Error when trying to get server usage. *(failed WebSocket)*", { ephemeral: true });
   }
 
+  let uptime = "";
+  if (usage.uptime) {
+    const ts = usage.uptime.getTime().toString();
+    uptime = `<t:${ts.substring(0, ts.length - 3)}:R>`;
+  }
+
   // Send interaction
   return interaction.reply(
     {
@@ -74,7 +80,8 @@ export async function handleServerInteraction(
             `<:name:1297265563776843906> **Name**: ${removeMarkdown(server.name)}\n` +
             `<:power:1297265042030592070> **Status**: ${ServerStateText[usage.power]}\n` +
             (usage.power === "running"
-              ? `<:cpu:1297264557773029376> **CPU**: ${(usage.cpu_percent * 100).toFixed(2)}% / 100%\n` +
+              ? `<:uptime:1297421873776427098> **Uptime**: ${uptime}\n` +
+                `<:cpu:1297264557773029376> **CPU**: ${(usage.cpu_percent * 100).toFixed(2)}% / 100%\n` +
                 `<:memory:1297262607648165898> **Memory**: ${(usage.ram_usage_bytes / 1.024e9).toFixed(1)}MB / ${(usage.ram_total_bytes / 1.024e9).toFixed(1)}MB\n` +
                 `<:storage:1297264207825207336> **Storage**: ${(usage.storage_usage_bytes / 1.024e9).toFixed(1)}MB / ${(usage.storage_total_bytes / 1.024e9).toFixed(1)}MB\n`
               : "") +
