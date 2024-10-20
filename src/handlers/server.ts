@@ -44,8 +44,12 @@ export async function handleServerInteraction(
     }) as Promise<Blob | null>,
   ]);
 
-  if (serverStatus !== 200 || !usage) {
+  if (serverStatus !== 200) {
     return interaction.reply("❌ Cannot find server or doesn't have access to server.", { ephemeral: true });
+  }
+
+  if (!usage) {
+    return interaction.reply("❌ Error when trying to get server usage.", { ephemeral: true });
   }
 
   // Send interaction
