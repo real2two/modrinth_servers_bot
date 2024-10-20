@@ -24,7 +24,7 @@ export async function getModrinthPat(
     if (autocomplete) {
       return (interaction as AutocompleteInteraction).respond([
         {
-          name: "Missing access token",
+          name: "Error: Missing access token",
           value: "null",
         },
       ]);

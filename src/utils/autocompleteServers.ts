@@ -10,7 +10,7 @@ export async function autocompleteServers(interaction: AutocompleteInteraction) 
   const serversRequest = await fetch(`${env.PYRO_ARCHON_API}/servers`, {
     headers: { Authorization: `Bearer ${modrinthPat}` },
   });
-  if (serversRequest.status !== 200) return interaction.respond([{ name: "Failed to authenticate", value: "null" }]);
+  if (serversRequest.status !== 200) return interaction.respond([{ name: "Error: Failed to authenticate", value: "null" }]);
 
   const { servers } = (await serversRequest.json()) as Servers;
   interaction.respond(
