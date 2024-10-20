@@ -79,14 +79,14 @@ export async function handleServerInteraction(
             `<:id:1297301249640632422> **ID**: ${server.server_id}\n` +
             `<:name:1297265563776843906> **Name**: ${removeMarkdown(server.name)}\n` +
             `<:power:1297265042030592070> **Status**: ${ServerStateText[usage.power]}\n` +
+            `<:domain:1297301020300279839> **Domain**: ${server.net.domain}.modrinth.gg\n` +
+            `<:ip:1297301626616414259> **IP**: ${server.net.ip}:${server.net.port}\n` +
             (usage.power === "running"
               ? `<:uptime:1297421873776427098> **Uptime**: ${uptime}\n` +
                 `<:cpu:1297264557773029376> **CPU**: ${(usage.cpu_percent * 100).toFixed(2)}% / 100%\n` +
                 `<:memory:1297262607648165898> **Memory**: ${(usage.ram_usage_bytes / 1.024e9).toFixed(1)}MB / ${(usage.ram_total_bytes / 1.024e9).toFixed(1)}MB\n` +
                 `<:storage:1297264207825207336> **Storage**: ${(usage.storage_usage_bytes / 1.024e9).toFixed(1)}MB / ${(usage.storage_total_bytes / 1.024e9).toFixed(1)}MB\n`
               : "") +
-            `<:domain:1297301020300279839> **Domain**: ${server.net.domain}.modrinth.gg\n` +
-            `<:ip:1297301626616414259> **IP**: ${server.net.ip}:${server.net.port}\n` +
             `<:game:1297301145504583800> **Game**: ${server.game} ${server.mc_version}\n` +
             `<:loader:1297301888768933979> **Loader**: ${server.loader} ${server.loader_version}`,
         }),
