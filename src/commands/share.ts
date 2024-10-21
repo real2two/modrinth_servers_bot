@@ -12,7 +12,7 @@ import { getServerFetch } from "../lib";
 
 class ShareListCommand extends Command {
   name = "list";
-  description = "List all users with permission to your servers";
+  description = "List all users with permission on a server";
   defer = false;
   options: APIApplicationCommandBasicOption[] = [
     {
