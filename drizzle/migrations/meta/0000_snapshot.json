@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "5ba43789-424d-4c9a-8a7f-baf4372a5d51",
+  "id": "4f46041c-a712-498d-bb7a-0b981cf923dc",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "users": {
@@ -14,9 +14,23 @@
           "notNull": true,
           "autoincrement": false
         },
-        "modrinth_pat": {
-          "name": "modrinth_pat",
+        "modrinth_auth": {
+          "name": "modrinth_auth",
           "type": "varchar(126)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "modrinth_expires": {
+          "name": "modrinth_expires",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "modrinth_refresh_expires": {
+          "name": "modrinth_refresh_expires",
+          "type": "date",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false

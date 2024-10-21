@@ -8,11 +8,11 @@ export async function handleCommandInteraction(
   command: string,
 ) {
   // Get user's Modrinth PAT
-  const modrinthPat = await getModrinthPat(interaction);
-  if (!modrinthPat) return;
+  const modrinthAuth = await getModrinthPat(interaction);
+  if (!modrinthAuth) return;
 
   // Get WebSocket token
-  const { status: wsStatus, body: wsBody } = await getWsToken(modrinthPat, serverId);
+  const { status: wsStatus, body: wsBody } = await getWsToken(modrinthAuth, serverId);
   if (wsStatus !== 200) return interaction.reply(`❌ Failed to send console message. *(status: \`${wsStatus}\`)*`);
   const { url, token } = wsBody;
 

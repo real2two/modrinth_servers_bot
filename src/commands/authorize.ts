@@ -15,26 +15,29 @@ export class AuthorizeCommand extends Command {
   options: APIApplicationCommandBasicOption[] = [
     {
       type: ApplicationCommandOptionType.String,
-      name: "pat",
+      name: "auth",
       description: "Enter your authorization token with the 'Read user data' scope here",
       required: false,
     },
   ];
 
   async run(interaction: CommandInteraction) {
-    const modrinthPat = interaction.options.getString("pat")?.trim();
+    const modrinthAuth = interaction.options.getString("auth")?.trim();
 
-    if (!modrinthPat) {
-      return interaction.reply({
-        embeds: [
-          new Embed({
-            color: 0xfee75c,
-            title: "How to authorize your Modrinth account to this Discord bot",
-            description: `1. Go to https://redacted.modrinth.com/servers/manage\n2. On your search bar, type out \`javascript:\` then paste the script below after that text: *(all you're doing in the sript below is getting the cookie named "auth-token")*\n\`\`\`\nalert(getCookie("auth-token"));function getCookie(t){let e=t+"=",n=decodeURIComponent(document.cookie).split(";");for(let o=0;o<n.length;o++){let i=n[o];for(;" "==i.charAt(0);)i=i.substring(1);if(0==i.indexOf(e))return i.substring(e.length,i.length)}return""}\n\`\`\`\n3. Copy the token.\n4. Run the </authorize:1296583363905327114> command and paste your personal access token on the "pat" argument.\n5. Then you're done! You will be logged out of your Modrinth account, because of how session refreshing works on Modrinth.`,
-            image: { url: "https://media.discordapp.net/attachments/1297352938250965023/1297391280988487733/image.png" },
-          }),
-        ],
-      });
+    if (!modrinthAuth) {
+      return interaction.reply(
+        {
+          embeds: [
+            new Embed({
+              color: 0xfee75c,
+              title: "How to authorize your Modrinth account to this Discord bot",
+              description: `1. Go to https://redacted.modrinth.com/servers/manage\n2. On your search bar, type out \`javascript:\` then paste the script below after that text: *(all you're doing in the sript below is getting the cookie named "auth-token")*\n\`\`\`\nalert(getCookie("auth-token"));function getCookie(t){let e=t+"=",n=decodeURIComponent(document.cookie).split(";");for(let o=0;o<n.length;o++){let i=n[o];for(;" "==i.charAt(0);)i=i.substring(1);if(0==i.indexOf(e))return i.substring(e.length,i.length)}return""}\n\`\`\`\n3. Copy the token.\n4. Run the </authorize:1296583363905327114> command and paste your authorization token on the "auth" argument.\n5. Then you're done! You will be logged out of your Modrinth account, because of how session refreshing works on Modrinth.`,
+              image: { url: "https://media.discordapp.net/attachments/1297352938250965023/1297708846550356018/image.png" },
+            }),
+          ],
+        },
+        { ephemeral: true },
+      );
       // return interaction.reply(
       //   {
       //     embeds: [
@@ -52,7 +55,7 @@ export class AuthorizeCommand extends Command {
       //       new Embed({
       //         color: 0xfee75c,
       //         description:
-      //           '5. Copy your personal access token.\n6. Run the </authorize:1296583363905327114> command and paste your personal access token on the "pat" argument.',
+      //           '5. Copy your personal access token.\n6. Run the </authorize:1296583363905327114> command and paste your personal access token on the "auth" argument.',
       //         image: { url: "https://media.discordapp.net/attachments/1297352938250965023/1297354004950548540/image.png" },
       //       }),
       //     ],
@@ -61,32 +64,40 @@ export class AuthorizeCommand extends Command {
       // );
     }
 
-    if (!modrinthPat.startsWith("mra_")) {
+    if (!modrinthAuth.startsWith("mra_")) {
       return interaction.reply("❌ This Discord bot only supports `mra` tokens currently.", { ephemeral: true });
     }
 
-    const userRequest = await fetch(`${env.MODRINTH_API}/_internal/session/refresh`, {
+    const refreshRequest = await fetch(`${env.MODRINTH_API}/_internal/session/refresh`, {
       method: "post",
-      headers: { authorization: modrinthPat },
+      headers: { authorization: modrinthAuth },
     });
 
-    if (userRequest.status !== 200) {
+    if (refreshRequest.status !== 200) {
       return interaction.reply(
-        `❌ Could not validate access token! *(status: \`${userRequest.status}\`)*\n-# Make sure your personal access token has the \`Read user data\` scope.`,
+        `❌ Could not validate authorization token! *(status: \`${refreshRequest.status}\`)*\n-# Make sure your authorization token has the \`Read user data\` scope.`,
         { ephemeral: true },
       );
     }
 
-    const { session } = await userRequest.json();
+    const { session, expires, refresh_expires } = await refreshRequest.json();
 
     await db
       .insert(schema.users)
       .values({
         userId: BigInt(interaction.userId as string),
-        modrinthPat: session,
+        modrinthAuth: session,
+        modrinthExpires: new Date(expires),
+        modrinthRefreshExpires: new Date(refresh_expires),
       })
-      .onDuplicateKeyUpdate({ set: { modrinthPat: session } });
+      .onDuplicateKeyUpdate({
+        set: {
+          modrinthAuth: session,
+          modrinthExpires: new Date(expires),
+          modrinthRefreshExpires: new Date(refresh_expires),
+        },
+      });
 
-    return interaction.reply("✅ Successfully saved your access token!", { ephemeral: true });
+    return interaction.reply("✅ Successfully saved your authorization token!", { ephemeral: true });
   }
 }

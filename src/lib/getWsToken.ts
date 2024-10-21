@@ -1,9 +1,9 @@
 import env from "../env";
 import type { WSAuth } from "../types";
 
-export async function getWsToken(modrinthPat: string, serverId: string) {
+export async function getWsToken(modrinthAuth: string, serverId: string) {
   const req = await fetch(`${env.PYRO_ARCHON_API}/servers/${encodeURIComponent(serverId)}/ws`, {
-    headers: { Authorization: `Bearer ${modrinthPat}` },
+    headers: { Authorization: `Bearer ${modrinthAuth}` },
   });
 
   return {

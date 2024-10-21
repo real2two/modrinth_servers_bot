@@ -19,13 +19,13 @@ export class SendConsoleButton extends Button {
 
   async run(interaction: ButtonInteraction) {
     // Get user's Modrinth PAT
-    const modrinthPat = await getModrinthPat(interaction);
-    if (!modrinthPat) return;
+    const modrinthAuth = await getModrinthPat(interaction);
+    if (!modrinthAuth) return;
 
     // Check if user can access server
     const serverId = interaction.message?.embeds[0].description?.split("\n")[0].slice(-36) as string;
 
-    const { status } = await getServer(modrinthPat, serverId);
+    const { status } = await getServer(modrinthAuth, serverId);
     if (status !== 200) {
       return interaction.reply("❌ Doesn't have access to server.", { ephemeral: true });
     }

@@ -4,11 +4,11 @@ import type { AutocompleteInteraction } from "@buape/carbon";
 import type { Servers } from "../types";
 
 export async function autocompleteServers(interaction: AutocompleteInteraction) {
-  const modrinthPat = await getModrinthPat(interaction, true);
-  if (!modrinthPat) return;
+  const modrinthAuth = await getModrinthPat(interaction, true);
+  if (!modrinthAuth) return;
 
   const serversRequest = await fetch(`${env.PYRO_ARCHON_API}/servers`, {
-    headers: { Authorization: `Bearer ${modrinthPat}` },
+    headers: { Authorization: `Bearer ${modrinthAuth}` },
   });
   if (serversRequest.status !== 200) return interaction.respond([{ name: "Error: Failed to authenticate", value: "null" }]);
 

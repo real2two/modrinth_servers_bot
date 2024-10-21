@@ -9,11 +9,11 @@ export async function handlePowerInteraction(
   power: PowerState,
 ) {
   // Get user's Modrinth PAT
-  const modrinthPat = await getModrinthPat(interaction);
-  if (!modrinthPat) return;
+  const modrinthAuth = await getModrinthPat(interaction);
+  if (!modrinthAuth) return;
 
   // Get WebSocket token
-  const { status: wsStatus, body: wsBody } = await getWsToken(modrinthPat, serverId);
+  const { status: wsStatus, body: wsBody } = await getWsToken(modrinthAuth, serverId);
   if (wsStatus !== 200) return interaction.reply(`❌ Failed to get current power state. *(status: \`${wsStatus}\`)*`);
   const { url, token } = wsBody;
 
@@ -27,7 +27,7 @@ export async function handlePowerInteraction(
   }
 
   // Change power state
-  const { status } = await changePowerState(modrinthPat, serverId, power);
+  const { status } = await changePowerState(modrinthAuth, serverId, power);
   if (status !== 201) return interaction.reply(`❌ Failed to change power state. *(status: \`${status}\`)*`);
 
   // Send message

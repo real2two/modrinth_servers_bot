@@ -12,11 +12,11 @@ export class ServersCommand extends Command {
 
   async run(interaction: CommandInteraction) {
     // Get user's Modrinth PAT
-    const modrinthPat = await getModrinthPat(interaction);
-    if (!modrinthPat) return;
+    const modrinthAuth = await getModrinthPat(interaction);
+    if (!modrinthAuth) return;
 
     // Get servers
-    const { status, body } = await getServers(modrinthPat);
+    const { status, body } = await getServers(modrinthAuth);
     if (status !== 200) {
       return interaction.reply(
         `❌ Returned an invalid status code. *(status: \`${status}\`)*\n-# Has your authorization token been revoked or expired?`,

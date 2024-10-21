@@ -1,6 +1,8 @@
-import { bigint, varchar, mysqlTable } from "drizzle-orm/mysql-core";
+import { bigint, varchar, mysqlTable, date } from "drizzle-orm/mysql-core";
 
 export const users = mysqlTable("users", {
   userId: bigint("user_id", { mode: "bigint" }).notNull().primaryKey(),
-  modrinthPat: varchar("modrinth_pat", { length: 126 }).notNull(),
+  modrinthAuth: varchar("modrinth_auth", { length: 126 }).notNull(),
+  modrinthExpires: date("modrinth_expires").notNull(),
+  modrinthRefreshExpires: date("modrinth_refresh_expires").notNull(),
 });

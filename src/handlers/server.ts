@@ -16,15 +16,15 @@ export async function handleServerInteraction(
   serverId: string,
 ) {
   // Get user's Modrinth PAT
-  const modrinthPat = await getModrinthPat(interaction);
-  if (!modrinthPat) return;
+  const modrinthAuth = await getModrinthPat(interaction);
+  if (!modrinthAuth) return;
 
   const [{ status: serverStatus, body: server }, usage, icon] = await Promise.all([
-    getServer(modrinthPat, serverId),
+    getServer(modrinthAuth, serverId),
 
     new Promise(async (resolve) => {
       // Get WebSocket token
-      const { status: wsStatus, body: wsBody } = await getWsToken(modrinthPat, serverId);
+      const { status: wsStatus, body: wsBody } = await getWsToken(modrinthAuth, serverId);
       if (wsStatus !== 200) return resolve(null);
       const { url: wsUrl, token: wsToken } = wsBody;
 
@@ -34,7 +34,7 @@ export async function handleServerInteraction(
 
     new Promise(async (resolve) => {
       // Get file system token
-      const { status: fsStatus, body: fsBody } = await getFsToken(modrinthPat, serverId);
+      const { status: fsStatus, body: fsBody } = await getFsToken(modrinthAuth, serverId);
       if (fsStatus !== 200) return resolve(null);
       const { url: fsUrl, token: fsToken } = fsBody;
 
