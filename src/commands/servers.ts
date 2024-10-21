@@ -20,7 +20,6 @@ export class ServersCommand extends Command {
     if (status !== 200) {
       return interaction.reply(
         `❌ Returned an invalid status code. *(status: \`${status}\`)*\n-# Has your authorization token been revoked or expired?`,
-        { ephemeral: true },
       );
     }
     const { servers } = body;

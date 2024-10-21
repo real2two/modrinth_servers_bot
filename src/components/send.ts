@@ -27,7 +27,7 @@ export class SendConsoleButton extends Button {
 
     const { status } = await getServer(modrinthAuth, serverId);
     if (status !== 200) {
-      return interaction.reply("❌ Doesn't have access to server.", { ephemeral: true });
+      return interaction.reply("❌ Doesn't have access to server.");
     }
 
     // Create form

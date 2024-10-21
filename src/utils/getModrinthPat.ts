@@ -33,7 +33,7 @@ export async function getModrinthPat(
         },
       ]);
     }
-    return interaction.reply("❌ Missing authorization token. </authorize:1296583363905327114>", { ephemeral: true });
+    return interaction.reply("❌ Missing authorization token. </authorize:1296583363905327114>");
   }
 
   // Check if authorization token expired
@@ -46,9 +46,7 @@ export async function getModrinthPat(
         },
       ]);
     }
-    return interaction.reply("❌ Modrinth authorization token has expired! </authorize:1296583363905327114>", {
-      ephemeral: true,
-    });
+    return interaction.reply("❌ Modrinth authorization token has expired! </authorize:1296583363905327114>");
   }
 
   // If refresh token hasn't expired, return user from database
@@ -61,9 +59,7 @@ export async function getModrinthPat(
   });
 
   if (refreshRequest.status !== 200) {
-    return interaction.reply("❌ Failed to refresh Modrinth authorization token! </authorize:1296583363905327114>", {
-      ephemeral: true,
-    });
+    return interaction.reply("❌ Failed to refresh Modrinth authorization token! </authorize:1296583363905327114>");
   }
 
   const { session: newModrinthAuth, expires, refresh_expires } = await refreshRequest.json();
