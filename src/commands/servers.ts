@@ -1,4 +1,4 @@
-import { Command, Embed, MessageFlags, Row, type CommandInteraction } from "@buape/carbon";
+import { Command, Embed, Row, type CommandInteraction } from "@buape/carbon";
 import { ServersSelect } from "../components";
 import { getModrinthPat, removeMarkdown } from "../utils";
 import { getServers } from "../lib";
