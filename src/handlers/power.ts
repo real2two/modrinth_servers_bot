@@ -1,7 +1,14 @@
 import type { ButtonInteraction, CommandInteraction } from "@buape/carbon";
 import type { PowerState } from "../types";
 import { getModrinthPat } from "../utils";
-import { changePowerState, getPowerState, getWsToken } from "../lib";
+import { changePowerState, getPowerState, getServerUser, getWsToken } from "../lib";
+
+enum PowerToPowerCaps {
+  Start = "START",
+  Restart = "RESTART",
+  Stop = "STOP",
+  Kill = "KILL",
+}
 
 export async function handlePowerInteraction(
   interaction: CommandInteraction | ButtonInteraction,
@@ -10,10 +17,20 @@ export async function handlePowerInteraction(
 ) {
   // Get user's Modrinth PAT
   const modrinthAuth = await getModrinthPat(interaction);
-  if (!modrinthAuth) return;
+
+  // Get server
+  const { status: serverStatus, modrinthAuth: useModrinthAuth } = await getServerUser(
+    interaction.userId as string,
+    modrinthAuth,
+    serverId,
+    PowerToPowerCaps[power],
+  );
+  if (serverStatus !== 200) {
+    return interaction.reply(`❌ Missing access. *(status: \`${serverStatus}\`)*`);
+  }
 
   // Get WebSocket token
-  const { status: wsStatus, body: wsBody } = await getWsToken(modrinthAuth, serverId);
+  const { status: wsStatus, body: wsBody } = await getWsToken(useModrinthAuth, serverId);
   if (wsStatus !== 200) return interaction.reply(`❌ Failed to get current power state. *(status: \`${wsStatus}\`)*`);
   const { url, token } = wsBody;
 
@@ -27,7 +44,7 @@ export async function handlePowerInteraction(
   }
 
   // Change power state
-  const { status } = await changePowerState(modrinthAuth, serverId, power);
+  const { status } = await changePowerState(useModrinthAuth, serverId, power);
   if (status !== 201) return interaction.reply(`❌ Failed to change power state. *(status: \`${status}\`)*`);
 
   // Send message

@@ -1,4 +1,4 @@
-import { bigint, varchar, mysqlTable, date } from "drizzle-orm/mysql-core";
+import { bigint, varchar, date, mysqlTable } from "drizzle-orm/mysql-core";
 
 export const users = mysqlTable("users", {
   userId: bigint("user_id", { mode: "bigint" }).notNull().primaryKey(),

@@ -4,7 +4,7 @@ import {
   type APIApplicationCommandBasicOption,
   type CommandInteraction,
 } from "@buape/carbon";
-import { autocompleteServers } from "../utils";
+import { createAutocompleteServersEvent } from "../utils";
 import { handleCommandInteraction } from "../handlers";
 
 export class SendConsoleCommand extends Command {
@@ -27,7 +27,7 @@ export class SendConsoleCommand extends Command {
     },
   ];
 
-  autocomplete = autocompleteServers;
+  autocomplete = createAutocompleteServersEvent(true, "CMD");
 
   async run(interaction: CommandInteraction) {
     const serverId = (interaction.options.getString("server") as string).trim();

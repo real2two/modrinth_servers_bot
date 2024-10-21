@@ -6,7 +6,7 @@ import {
   type ButtonInteraction,
 } from "@buape/carbon";
 import { getModrinthPat, removeMarkdown } from "../utils";
-import { getFsToken, getServer, getServerIcon, getServerUsage, getWsToken } from "../lib";
+import { getFsToken, getServerUser, getServerIcon, getServerUsage, getWsToken } from "../lib";
 import { ServerStateColor, ServerStateText } from "../utils/serverStates";
 import { PowerKillButton, PowerRestartButton, PowerStartButton, PowerStopButton, ServerReloadButton } from "../components";
 import { SendConsoleButton } from "../components/send";
@@ -17,14 +17,20 @@ export async function handleServerInteraction(
 ) {
   // Get user's Modrinth PAT
   const modrinthAuth = await getModrinthPat(interaction);
-  if (!modrinthAuth) return;
 
-  const [{ status: serverStatus, body: server }, usage, icon] = await Promise.all([
-    getServer(modrinthAuth, serverId),
+  const {
+    modrinthAuth: useModrinthAuth,
+    status,
+    server,
+  } = await getServerUser(interaction.userId as string, modrinthAuth, serverId);
+  if (status !== 200) {
+    return interaction.reply(`❌ Missing access. *(status: \`${status}\`)*`);
+  }
 
+  const [usage, icon] = await Promise.all([
     new Promise(async (resolve) => {
       // Get WebSocket token
-      const { status: wsStatus, body: wsBody } = await getWsToken(modrinthAuth, serverId);
+      const { status: wsStatus, body: wsBody } = await getWsToken(useModrinthAuth, serverId);
       if (wsStatus !== 200) return resolve(null);
       const { url: wsUrl, token: wsToken } = wsBody;
 
@@ -34,7 +40,7 @@ export async function handleServerInteraction(
 
     new Promise(async (resolve) => {
       // Get file system token
-      const { status: fsStatus, body: fsBody } = await getFsToken(modrinthAuth, serverId);
+      const { status: fsStatus, body: fsBody } = await getFsToken(useModrinthAuth, serverId);
       if (fsStatus !== 200) return resolve(null);
       const { url: fsUrl, token: fsToken } = fsBody;
 
@@ -43,10 +49,6 @@ export async function handleServerInteraction(
       resolve(iconStatus === 200 ? iconBlob : null);
     }) as Promise<Blob | null>,
   ]);
-
-  if (serverStatus !== 200) {
-    return interaction.reply(`❌ Cannot find server or doesn't have access to server. *(status: \`${serverStatus}\`)*`);
-  }
 
   if (!usage) {
     return interaction.reply("❌ Error when trying to get server usage. *(failed WebSocket)*");

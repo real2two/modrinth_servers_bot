@@ -1,52 +1,21 @@
 import env from "../env";
 import { db, schema, eq } from "../drizzle/main";
-import type {
-  AutocompleteInteraction,
-  CommandInteraction,
-  ButtonInteraction,
-  StringSelectMenuInteraction,
-  ModalInteraction,
-} from "@buape/carbon";
 
-export async function getModrinthPat(
-  interaction:
-    | CommandInteraction
-    | AutocompleteInteraction
-    | ButtonInteraction
-    | StringSelectMenuInteraction
-    | ModalInteraction,
-  autocomplete = false,
-) {
+export async function getModrinthPat(interaction: { userId?: string }): Promise<string> {
   // Get saved user information from database
   const userId = BigInt(interaction.userId as string);
   const user = await db.query.users.findFirst({
     where: eq(schema.users.userId, userId),
   });
 
-  // Cannot find user in database
-  if (!user) {
-    if (autocomplete) {
-      return (interaction as AutocompleteInteraction).respond([
-        {
-          name: "Error: Missing authorization token",
-          value: "null",
-        },
-      ]);
-    }
-    return interaction.reply("❌ Missing authorization token. </authorize:1296583363905327114>");
-  }
-
-  // Check if authorization token expired
-  if (Date.now() > user.modrinthRefreshExpires.getTime()) {
-    if (autocomplete) {
-      return (interaction as AutocompleteInteraction).respond([
-        {
-          name: "Error: Modrinth authorization token has expired!",
-          value: "null",
-        },
-      ]);
-    }
-    return interaction.reply("❌ Modrinth authorization token has expired! </authorize:1296583363905327114>");
+  if (
+    // Cannot find user in database
+    !user ||
+    // Check if authorization token expired
+    Date.now() > user.modrinthRefreshExpires.getTime()
+  ) {
+    // Returns no authorization token
+    return "";
   }
 
   // If refresh token hasn't expired, return user from database
@@ -58,12 +27,9 @@ export async function getModrinthPat(
     headers: { authorization: user.modrinthAuth },
   });
 
-  if (refreshRequest.status !== 200) {
-    return interaction.reply("❌ Failed to refresh Modrinth authorization token! </authorize:1296583363905327114>");
-  }
+  if (refreshRequest.status !== 200) return user.modrinthAuth; // Failed to refresh token
 
   const { session: newModrinthAuth, expires, refresh_expires } = await refreshRequest.json();
-
   await db
     .insert(schema.users)
     .values({

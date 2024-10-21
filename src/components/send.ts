@@ -9,7 +9,7 @@ import {
   type ModalInteraction,
 } from "@buape/carbon";
 import { getModrinthPat } from "../utils";
-import { getServer } from "../lib";
+import { getServerUser } from "../lib";
 import { handleCommandInteraction } from "../handlers";
 
 export class SendConsoleButton extends Button {
@@ -20,14 +20,13 @@ export class SendConsoleButton extends Button {
   async run(interaction: ButtonInteraction) {
     // Get user's Modrinth PAT
     const modrinthAuth = await getModrinthPat(interaction);
-    if (!modrinthAuth) return;
 
     // Check if user can access server
     const serverId = interaction.message?.embeds[0].description?.split("\n")[0].slice(-36) as string;
 
-    const { status } = await getServer(modrinthAuth, serverId);
-    if (status !== 200) {
-      return interaction.reply("❌ Doesn't have access to server.");
+    const { status, server } = await getServerUser(interaction.userId as string, modrinthAuth, serverId, "CMD");
+    if (!server) {
+      return interaction.reply(`❌ Doesn't have access to server. *(status: \`${status}\`)*`);
     }
 
     // Create form

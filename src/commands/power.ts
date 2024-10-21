@@ -4,7 +4,7 @@ import {
   type APIApplicationCommandBasicOption,
   type CommandInteraction,
 } from "@buape/carbon";
-import { autocompleteServers } from "../utils";
+import { createAutocompleteServersEvent } from "../utils";
 import { handlePowerInteraction } from "../handlers";
 
 export class StartCommand extends Command {
@@ -21,7 +21,7 @@ export class StartCommand extends Command {
     },
   ];
 
-  autocomplete = autocompleteServers;
+  autocomplete = createAutocompleteServersEvent(true, "START");
 
   async run(interaction: CommandInteraction) {
     const serverId = (interaction.options.getString("server") as string).trim();
@@ -43,7 +43,7 @@ export class RestartCommand extends Command {
     },
   ];
 
-  autocomplete = autocompleteServers;
+  autocomplete = createAutocompleteServersEvent(true, "RESTART");
 
   async run(interaction: CommandInteraction) {
     const serverId = (interaction.options.getString("server") as string).trim();
@@ -65,7 +65,7 @@ export class StopCommand extends Command {
     },
   ];
 
-  autocomplete = autocompleteServers;
+  autocomplete = createAutocompleteServersEvent(true, "STOP");
 
   async run(interaction: CommandInteraction) {
     const serverId = (interaction.options.getString("server") as string).trim();
@@ -87,7 +87,7 @@ export class KillCommand extends Command {
     },
   ];
 
-  autocomplete = autocompleteServers;
+  autocomplete = createAutocompleteServersEvent(true, "KILL");
 
   async run(interaction: CommandInteraction) {
     const serverId = (interaction.options.getString("server") as string).trim();

@@ -1,7 +1,7 @@
 import { Command, Embed, Row, type CommandInteraction } from "@buape/carbon";
 import { ServersSelect } from "../components";
 import { getModrinthPat, removeMarkdown } from "../utils";
-import { getServers } from "../lib";
+import { getServersUser } from "../lib";
 
 export class ServersCommand extends Command {
   name = "servers";
@@ -13,16 +13,9 @@ export class ServersCommand extends Command {
   async run(interaction: CommandInteraction) {
     // Get user's Modrinth PAT
     const modrinthAuth = await getModrinthPat(interaction);
-    if (!modrinthAuth) return;
 
     // Get servers
-    const { status, body } = await getServers(modrinthAuth);
-    if (status !== 200) {
-      return interaction.reply(
-        `❌ Returned an invalid status code. *(status: \`${status}\`)*\n-# Has your authorization token been revoked or expired?`,
-      );
-    }
-    const { servers } = body;
+    const servers = await getServersUser(interaction.userId as string, modrinthAuth);
 
     // Send message
     let serversText = !servers.length
