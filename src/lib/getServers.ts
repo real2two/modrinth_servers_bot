@@ -18,10 +18,12 @@ export async function getServersFetch(modrinthAuth: string) {
     const serversBody = (await req.json()) as Servers;
 
     if (!cachedServers.get(modrinthAuth)) {
+      console.log("CACHE!");
       // Race condition check
       cachedServers.set(modrinthAuth, serversBody);
 
       setTimeout(() => {
+        console.log("REMOVE CACHE");
         cachedServers.delete(modrinthAuth);
       }, 15000);
     }
