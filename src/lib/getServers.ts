@@ -22,7 +22,7 @@ export async function getServersFetch(modrinthAuth: string) {
 
       setTimeout(() => {
         cachedServers.delete(modrinthAuth);
-      }, 15000);
+      }, 60000);
     }
 
     return {
