@@ -15,11 +15,15 @@ export async function getServersFetch(modrinthAuth: string) {
 
   if (req.status === 200) {
     const serversBody = (await req.json()) as Servers;
-    cachedServers.set(modrinthAuth, serversBody);
 
-    setTimeout(() => {
-      cachedServers.delete(modrinthAuth);
-    }, 15000);
+    if (!cachedServers.get(modrinthAuth)) {
+      // Race condition check
+      cachedServers.set(modrinthAuth, serversBody);
+
+      setTimeout(() => {
+        cachedServers.delete(modrinthAuth);
+      }, 15000);
+    }
 
     return {
       status: req.status,
