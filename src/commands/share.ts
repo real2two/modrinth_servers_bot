@@ -211,7 +211,14 @@ class ShareAddCommand extends Command {
 
     // If no permissions were set, disallow running the command
     if (!canSendCommands && !canStartServer && !canRestartServer && !canStopServer && !canKillServer) {
-      return interaction.reply("❌ Cannot give user no permissions. Make sure to set one of the `can_` options as `True`!");
+      return interaction.reply(
+        "❌ Cannot give user no permissions. Make sure to set one of the `can_` parameters on the command as `True`!",
+      );
+    }
+
+    // Cannot give restart server without giving start server
+    if (canRestartServer && !canStartServer) {
+      return interaction.reply("❌ Cannot give restart server permissions without giving start server permissions.");
     }
 
     // Get shares that have access
