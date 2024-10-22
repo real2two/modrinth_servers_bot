@@ -27,7 +27,7 @@ export async function handleServerInteraction(
     return interaction.reply(`❌ Missing access. *(status: \`${status}\`)*`);
   }
 
-  await interaction.defer();
+  interaction.defer();
 
   const [usage, icon] = await Promise.all([
     new Promise(async (resolve) => {
