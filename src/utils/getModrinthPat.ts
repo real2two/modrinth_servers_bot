@@ -19,9 +19,7 @@ export async function getModrinthPat(interaction: { userId?: string }): Promise<
   }
 
   // If refresh token hasn't expired, return user from database
-  if (Date.now() > user.modrinthExpires.getTime()) return user.modrinthAuth;
-
-  console.log("WHAT", Date.now() > user.modrinthExpires.getTime(), Date.now(), user.modrinthExpires.getTime());
+  if (Date.now() < user.modrinthExpires.getTime()) return user.modrinthAuth;
 
   // Refresh token and return new Modrinth authorization token
   const refreshRequest = await fetch(`${env.MODRINTH_API}/_internal/session/refresh`, {
