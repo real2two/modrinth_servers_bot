@@ -19,6 +19,7 @@ import {
 export class ServerCommand extends Command {
   name = "server";
   description = "Get a server information";
+  defer = true;
   options: APIApplicationCommandBasicOption[] = [
     {
       type: ApplicationCommandOptionType.String,
