@@ -21,7 +21,7 @@ export async function getModrinthPat(interaction: { userId?: string }): Promise<
   // If refresh token hasn't expired, return user from database
   if (Date.now() > user.modrinthExpires.getTime()) return user.modrinthAuth;
 
-  console.log("HUHH??");
+  console.log("WHAT");
 
   // Refresh token and return new Modrinth authorization token
   const refreshRequest = await fetch(`${env.MODRINTH_API}/_internal/session/refresh`, {
@@ -33,20 +33,13 @@ export async function getModrinthPat(interaction: { userId?: string }): Promise<
 
   const { session: newModrinthAuth, expires, refresh_expires } = await refreshRequest.json();
   await db
-    .insert(schema.users)
-    .values({
-      userId,
+    .update(schema.users)
+    .set({
       modrinthAuth: newModrinthAuth,
       modrinthExpires: new Date(expires),
       modrinthRefreshExpires: new Date(refresh_expires),
     })
-    .onDuplicateKeyUpdate({
-      set: {
-        modrinthAuth: newModrinthAuth,
-        modrinthExpires: new Date(expires),
-        modrinthRefreshExpires: new Date(refresh_expires),
-      },
-    });
+    .where(eq(schema.users.userId, userId));
 
   return newModrinthAuth;
 }
