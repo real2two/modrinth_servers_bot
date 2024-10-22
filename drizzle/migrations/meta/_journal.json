@@ -15,6 +15,13 @@
       "when": 1729476090215,
       "tag": "0001_dark_longshot",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1729568567452,
+      "tag": "0002_fine_blue_blade",
+      "breakpoints": true
     }
   ]
 }

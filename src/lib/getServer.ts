@@ -16,6 +16,7 @@ export async function getServerUser(
     where: and(eq(schema.share.accessUserId, BigInt(userId)), eq(schema.share.serverId, serverId)),
   });
 
+  console.log(shares);
   for (const share of shares) {
     const shareModrinthAuth = await getModrinthPat({ userId: share.userId.toString() });
     const shareServer = await getServerFetch(shareModrinthAuth, serverId);

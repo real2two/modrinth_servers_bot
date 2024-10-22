@@ -1,0 +1,1 @@
+ALTER TABLE `share` DROP PRIMARY KEY, ADD PRIMARY KEY(`user_id`,`server_id`,`access_user_id`);

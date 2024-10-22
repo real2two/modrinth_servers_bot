@@ -16,7 +16,7 @@ export const share = mysqlTable(
   (table) => ({
     pk: primaryKey({
       name: "characters_pk",
-      columns: [table.userId, table.accessUserId],
+      columns: [table.userId, table.serverId, table.accessUserId],
     }),
   }),
 );
