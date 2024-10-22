@@ -7,7 +7,7 @@ const cachedServers = new Map<string, Servers>();
 
 export async function getServersFetch(modrinthAuth: string) {
   const cachedServer = cachedServers.get(modrinthAuth);
-  if (cachedServer) return { status: 200, body: { servers: [...cachedServer.servers] } };
+  if (cachedServer) return { status: 200, body: JSON.parse(JSON.stringify(cachedServer)) };
 
   const req = await fetch(`${env.PYRO_ARCHON_API}/servers`, {
     headers: { Authorization: `Bearer ${modrinthAuth}` },
