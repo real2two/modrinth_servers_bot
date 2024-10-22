@@ -74,11 +74,7 @@
       "compositePrimaryKeys": {
         "characters_pk": {
           "name": "characters_pk",
-          "columns": [
-            "user_id",
-            "server_id",
-            "access_user_id"
-          ]
+          "columns": ["user_id", "server_id", "access_user_id"]
         }
       },
       "uniqueConstraints": {},
@@ -121,9 +117,7 @@
       "compositePrimaryKeys": {
         "users_user_id": {
           "name": "users_user_id",
-          "columns": [
-            "user_id"
-          ]
+          "columns": ["user_id"]
         }
       },
       "uniqueConstraints": {},
