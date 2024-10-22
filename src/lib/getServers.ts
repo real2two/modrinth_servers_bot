@@ -72,13 +72,11 @@ export async function getServersUser(
       }
 
       const { status, body } = cachedRequests.get(shareUserId) as Awaited<ReturnType<typeof getServersFetch>>;
-      const server = (status === 200 ? body.servers : []).find((s) => s.server_id);
+      const server = (status === 200 ? body.servers : []).find((s) => s.server_id === share.serverId);
 
       if (server) servers.push(server);
     }
   }
-
-  console.log(servers);
 
   return servers;
 }
