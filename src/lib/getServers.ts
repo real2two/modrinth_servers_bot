@@ -53,6 +53,9 @@ export async function getServersUser(
       .where(eq(schema.share.accessUserId, BigInt(userId)));
 
     const cachedRequests = new Map<string, Awaited<ReturnType<typeof getServersFetch>>>();
+
+    console.log(1, shares);
+
     for (const share of shares) {
       const shareUserId = share.userId.toString();
 
@@ -72,6 +75,8 @@ export async function getServersUser(
 
       const { status, body } = cachedRequests.get(shareUserId) as Awaited<ReturnType<typeof getServersFetch>>;
       const server = (status === 200 ? body.servers : []).find((s) => s.server_id);
+
+      console.log(2, server);
 
       if (server) servers.push(server);
     }
