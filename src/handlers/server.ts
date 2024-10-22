@@ -63,7 +63,7 @@ export async function handleServerInteraction(
   }
 
   // Send interaction
-  return interaction.reply(
+  return interaction.followUp(
     {
       embeds: [
         new Embed({
