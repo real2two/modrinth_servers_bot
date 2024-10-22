@@ -27,6 +27,8 @@ export async function handleServerInteraction(
     return interaction.reply(`❌ Missing access. *(status: \`${status}\`)*`);
   }
 
+  // In theory, this should be awaited but based off how long the requests below take...
+  // it will not be fast enough to fail the follow up.
   interaction.defer();
 
   const [usage, icon] = await Promise.all([
