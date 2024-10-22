@@ -19,6 +19,7 @@ export async function getServerUser(
   for (const share of shares) {
     const shareModrinthAuth = await getModrinthPat({ userId: share.userId.toString() });
     const shareServer = await getServerFetch(shareModrinthAuth, serverId);
+    console.log("YAH", shareServer.status);
     if (shareServer.status === 200) {
       if (permissions && permissions === "CMD" && !share.canSendCommands) continue;
       if (permissions && permissions === "START" && !share.canStartServer) continue;
