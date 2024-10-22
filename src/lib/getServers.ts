@@ -7,7 +7,6 @@ const cachedServers = new Map<string, Servers>();
 
 export async function getServersFetch(modrinthAuth: string) {
   const cachedServer = cachedServers.get(modrinthAuth);
-  console.log(cachedServer, modrinthAuth);
   if (cachedServer) return { status: 200, body: cachedServer };
 
   const req = await fetch(`${env.PYRO_ARCHON_API}/servers`, {
@@ -18,12 +17,10 @@ export async function getServersFetch(modrinthAuth: string) {
     const serversBody = (await req.json()) as Servers;
 
     if (!cachedServers.get(modrinthAuth)) {
-      console.log("CACHE!", modrinthAuth);
       // Race condition check
       cachedServers.set(modrinthAuth, serversBody);
 
       setTimeout(() => {
-        console.log("REMOVE CACHE", modrinthAuth);
         cachedServers.delete(modrinthAuth);
       }, 15000);
     }
