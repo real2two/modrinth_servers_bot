@@ -26,7 +26,7 @@ export class ServersCommand extends Command {
               `- **${removeMarkdown(s.name)}**: \`${s.net.domain}.modrinth.gg\` (${s.game} ${s.mc_version}, ${s.loader} ${s.loader_version})`,
           )
           .join("\n");
-    if (serversText.length > 4096) {
+    if (serversText.length > 4000) {
       serversText = "You have too many servers for this bot to handle! This bot doesn't support a pagination yet!";
     }
 
