@@ -3,14 +3,33 @@ import { db, schema, eq } from "../drizzle/main";
 import type { Servers } from "../types";
 import { getModrinthPat } from "../utils";
 
+const cachedServers = new Map<string, Servers>();
+
 export async function getServersFetch(modrinthAuth: string) {
+  const cachedServer = cachedServers.get(modrinthAuth);
+  if (cachedServer) return { status: 200, body: cachedServer };
+
   const req = await fetch(`${env.PYRO_ARCHON_API}/servers`, {
     headers: { Authorization: `Bearer ${modrinthAuth}` },
   });
 
+  if (req.status === 200) {
+    const serversBody = (await req.json()) as Servers;
+    cachedServers.set(modrinthAuth, serversBody);
+
+    setTimeout(() => {
+      cachedServers.delete(modrinthAuth);
+    }, 15000);
+
+    return {
+      status: req.status,
+      body: serversBody,
+    };
+  }
+
   return {
     status: req.status,
-    body: (req.status === 200 ? await req.json() : []) as Servers,
+    body: { servers: [] },
   };
 }
 
