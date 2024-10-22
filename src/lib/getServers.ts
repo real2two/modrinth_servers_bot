@@ -78,5 +78,7 @@ export async function getServersUser(
     }
   }
 
+  console.log(servers);
+
   return servers;
 }
