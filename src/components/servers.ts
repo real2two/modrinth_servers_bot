@@ -16,7 +16,7 @@ export class ServersSelect extends StringSelectMenu {
       this.options.push({
         label: s.name,
         value: s.server_id,
-        description: `${s.net.domain}.modrinth.gg (${s.game} ${s.mc_version}, ${s.loader} ${s.loader_version})`,
+        description: `${s.net.domain}.modrinth.gg (${s.game} ${s.mc_version || "??"}, ${s.loader || "??"} ${s.loader_version || "??"})`,
       });
     }
   }

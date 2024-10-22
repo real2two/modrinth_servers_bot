@@ -23,7 +23,7 @@ export class ServersCommand extends Command {
       : servers
           .map(
             (s) =>
-              `- **${removeMarkdown(s.name)}**: \`${s.net.domain}.modrinth.gg\` (${s.game} ${s.mc_version}, ${s.loader} ${s.loader_version})`,
+              `- **${removeMarkdown(s.name)}**: \`${s.net.domain}.modrinth.gg\` (${s.game} ${s.mc_version || "??"}, ${s.loader || "??"} ${s.loader_version || "??"})`,
           )
           .join("\n");
     if (serversText.length > 4000) {
