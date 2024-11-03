@@ -40,7 +40,7 @@ export class ServersCommand extends Command {
           description: serversText,
         }),
       ],
-      components: [new Row([new ServersSelect(servers)])],
+      components: servers.length ? [new Row([new ServersSelect(servers)])] : [],
     });
   }
 }
