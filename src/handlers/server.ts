@@ -75,7 +75,7 @@ export async function handleServerInteraction(
           thumbnail: {
             url: icon
               ? "attachment://server-icon-original.png"
-              : "https://redacted.modrinth.com/_nuxt/minecraft_server_icon.DpF3iail.png",
+              : "https://modrinth.com/_nuxt/minecraft_server_icon.DpF3iail.png",
           },
           description:
             // biome-ignore lint/style/useTemplate: This looks better than putting everything on one line.

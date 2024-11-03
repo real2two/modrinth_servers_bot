@@ -31,7 +31,7 @@ export class AuthorizeCommand extends Command {
             new Embed({
               color: 0xfee75c,
               title: "How to authorize your Modrinth account to this Discord bot",
-              description: `1. Go to https://redacted.modrinth.com/servers/manage\n2. On your search bar, type out \`javascript:\` then paste the script below after that text: *(all you're doing in the sript below is getting the cookie named "auth-token")*\n\`\`\`\nalert(getCookie("auth-token"));function getCookie(t){let e=t+"=",n=decodeURIComponent(document.cookie).split(";");for(let o=0;o<n.length;o++){let i=n[o];for(;" "==i.charAt(0);)i=i.substring(1);if(0==i.indexOf(e))return i.substring(e.length,i.length)}return""}\n\`\`\`\n3. Copy the token.\n4. Run the </authorize:1296583363905327114> command and paste your authorization token on the "auth" argument.\n5. Then you're done! You will be logged out of your Modrinth account, because of how session refreshing works on Modrinth.`,
+              description: `1. Go to https://modrinth.com/servers/manage\n2. On your search bar, type out \`javascript:\` then paste the script below after that text: *(all you're doing in the sript below is getting the cookie named "auth-token")*\n\`\`\`\nalert(getCookie("auth-token"));function getCookie(t){let e=t+"=",n=decodeURIComponent(document.cookie).split(";");for(let o=0;o<n.length;o++){let i=n[o];for(;" "==i.charAt(0);)i=i.substring(1);if(0==i.indexOf(e))return i.substring(e.length,i.length)}return""}\n\`\`\`\n3. Copy the token.\n4. Run the </authorize:1296583363905327114> command and paste your authorization token on the "auth" argument.\n5. Then you're done! You will be logged out of your Modrinth account, because of how session refreshing works on Modrinth.`,
               image: { url: "https://media.discordapp.net/attachments/1297352938250965023/1297708846550356018/image.png" },
             }),
           ],
@@ -44,7 +44,7 @@ export class AuthorizeCommand extends Command {
       //       new Embed({
       //         color: 0xfee75c,
       //         title: "How to authorize your Modrinth account to this Discord bot",
-      //         description: '1. Go to https://redacted.modrinth.com/settings/pats\n2. Click "Create a PAT".',
+      //         description: '1. Go to https://modrinth.com/settings/pats\n2. Click "Create a PAT".',
       //         image: { url: "https://media.discordapp.net/attachments/1297352938250965023/1297352975265828874/image.png" },
       //       }),
       //       new Embed({
